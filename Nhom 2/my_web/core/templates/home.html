@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head><title>Trang Bình Luận</title></head>
+<body>
+    <h1>Trang Bình Luận Bằng Django</h1>
+
+    {% if user.is_authenticated %}
+        <p>Xin chào, <b>{{ user.username }}</b>!</p>
+        <form action="{% url 'logout' %}" method="post">
+            {% csrf_token %}
+            <button type="submit">Đăng xuất</button>
+        </form>
+        <br>
+        <form method="POST">
+            {% csrf_token %}
+            <textarea name="text" required placeholder="Nhập bình luận..."></textarea><br>
+            <button type="submit">Gửi</button>
+        </form>
+    {% else %}
+        <p>Bạn chưa đăng nhập. <a href="{% url 'login' %}">Nhấn vào đây để đăng nhập</a></p>
+    {% endif %}
+
+    <hr>
+    <h3>Các bình luận:</h3>
+    <ul>
+        {% for comment in comments %}
+            <li><b>{{ comment.user.username }}</b>: {{ comment.text }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
